@@ -1,8 +1,10 @@
 package com.cc.dto;
 
+import com.cc.validator.MyConstraint;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Past;
 import java.util.Date;
 
 public class User {
@@ -11,9 +13,11 @@ public class User {
     public interface UserDetailView extends UserSimpleView {};
 
     private String id;
+    @MyConstraint(message = "这是一个测试")
     private String username;
-    @NotBlank
+    @NotBlank(message = "密码不能为空")
     private String password;
+    @Past(message = "生日必须是过去的时间")
     private Date birthday;
 
     @JsonView(UserSimpleView.class)
