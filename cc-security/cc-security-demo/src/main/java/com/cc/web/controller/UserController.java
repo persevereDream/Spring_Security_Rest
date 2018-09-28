@@ -3,6 +3,7 @@ package com.cc.web.controller;
 
 import com.cc.dto.User;
 import com.cc.dto.UserQueryCondition;
+import com.cc.exception.UserNotExistException;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
@@ -31,6 +32,13 @@ public class UserController {
         return user;
     }
 
+    @PostMapping("/c1")
+    public User create(@Valid @RequestBody User user){
+        System.out.println(user.toString());
+        user.setId("1");
+        return user;
+    }
+
     @GetMapping
     @JsonView(User.UserSimpleView.class)
     public List<User> query(UserQueryCondition userQueryCondition,
@@ -50,10 +58,13 @@ public class UserController {
     @GetMapping("/{id:\\d+}")
     @JsonView(User.UserDetailView.class)
     public User getInfo(@PathVariable(name = "id") String id){
-        User user = new User();
-        user.setUsername("cc");
-        user.setPassword("password");
-        return user;
+
+        throw new UserNotExistException(id);
+
+//        User user = new User();
+//        user.setUsername("cc");
+//        user.setPassword("password");
+//        return user;
     }
 
     @PutMapping("/{id:\\d+}")

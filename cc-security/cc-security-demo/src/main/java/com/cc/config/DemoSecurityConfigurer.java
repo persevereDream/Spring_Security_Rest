@@ -15,8 +15,7 @@ public class DemoSecurityConfigurer extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         // 设置不拦截规则
-//        web.ignoring().antMatchers("/**");
-
+        web.ignoring().antMatchers("/**");
     }
 
     @Override
