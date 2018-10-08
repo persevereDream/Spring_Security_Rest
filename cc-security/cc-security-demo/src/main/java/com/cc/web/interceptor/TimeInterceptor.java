@@ -15,8 +15,8 @@ public class TimeInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         System.out.println("preHandle");
 
-        System.out.println(((HandlerMethod)handler).getBean().getClass().getName());
-        System.out.println(((HandlerMethod)handler).getMethod().getName());
+//        System.out.println(((HandlerMethod)handler).getBean().getClass().getName());
+//        System.out.println(((HandlerMethod)handler).getMethod().getName());
 
         request.setAttribute("startTime",new Date().getTime());
         return true;
