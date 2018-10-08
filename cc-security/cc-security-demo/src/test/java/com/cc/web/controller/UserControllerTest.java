@@ -36,6 +36,15 @@ public class UserControllerTest {
         mockMvc = MockMvcBuilders.webAppContextSetup(mvc).build();
     }
 
+    @Test
+    public void whenUploadSuccess() throws Exception {
+        String result = mockMvc.perform(MockMvcRequestBuilders.multipart("/file")
+                .file(new MockMultipartFile("file", "test.txt",
+                        "multipart/form-data", "hello upload".getBytes("UTF-8"))))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn().getResponse().getContentAsString();
+        System.out.println(result);
+    }
 
     @Test
     public void whenQuerySuccess() throws Exception {
