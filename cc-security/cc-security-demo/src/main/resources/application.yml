@@ -12,6 +12,7 @@ spring:
     #共享session关闭
     store-type: none
 
+cc.security.browser.loginPage: /demo-signIn.html
 
 
 

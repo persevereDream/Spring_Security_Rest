@@ -1,6 +1,8 @@
 package com.cc.security.browser;
 
+import com.cc.security.core.SecurityProperties;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -17,15 +19,24 @@ import java.util.Map;
 
 @Configuration
 public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
+    @Autowired
+    private SecurityProperties securityProperties;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.formLogin()              //表单登陆
-//          http.httpBasic()              //基础登陆、弹出窗口
-                .and()
-                .authorizeRequests()    //下方配置都是要授权的
-                .anyRequest()           //所有请求
-                .authenticated();       //需要身份认证
+        http.formLogin()    //表单登陆
+//          http.httpBasic()
+                .loginPage("/authentication/require")   //配置登陆页面地址（可以是html的静态地址，也可以是Controller的动态请求）
+                .loginProcessingUrl("/authentication/form") //发出这个请求时,通知UsernamePasswordAuthenticationFilter处理这个请求
+            .and()
+            .authorizeRequests()    //下方配置都是要授权的
+                .antMatchers("/authentication/require",
+                        securityProperties.getBrowser().getLoginPage()  //配置的登陆页面放权
+                            ).permitAll()
+                .anyRequest()   //所有请求
+                .authenticated()    //需要身份认证
+            .and()
+            .csrf().disable();  //关闭跨域请求防护
     }
 
     @Bean
